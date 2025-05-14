@@ -1,48 +1,45 @@
 #include "aip16c22.h"
+#include "Wire.h"
 
-
-float temperature_celcius = 34.5; // C
-float temperature_fahrenheit = 89.5; // F
-float humidity = 66.1; // %
-uint8_t battery = 40; // 0-100 percentage
 
 AIP16C22 display;
 
 void setup() {
+  Serial.begin(115200);
   display.displayInit();
 
-}
+  display.updateIcon(display.BLE_ICON, true);
+  display.updateIcon(display.FROST_ICON, true);
+  display.updateIcon(display.FIRE_ICON, true);
+  display.updateIcon(display.HUMIDITY_ICON, true);
+  display.updateIcon(display.SUN_ICON, true);
 
+  delay(2000);
 
-void loop() {
-  display.printBattLevel(battery);
+  for(uint8_t i=0; i<=100; i+=20) {
+    display.printBattLevel(i);
+    delay(500);
+  }
+
+  display.printTemperature(30.4); // show celcius temperature
   delay(1000);
-  display.updateIcon(display.BLE_ICON, true); // turn on ble icon
-  delay(500);
-  display.updateIcon(display.FIRE_ICON, true); // turn on fire icon
-  delay(500);
-  display.updateIcon(display.SUN_ICON, true); // turn on sun icon
-  delay(500);
-  display.updateIcon(display.FROST_ICON, true); // turn on frost icon
-  delay(500);
-  display.updateIcon(display.HUMIDITY_ICON, true); // turn on huidity icon
+  display.printTemperature(55.8, true); // show fahrenheit temperature
 
+  display.printHumidity(98.3);
+
+  display.updateIcon(display.BLE_ICON, false);
   delay(1000);
-  display.updateIcon(display.BLE_ICON, false); // turn off ble icon
-  delay(500);
-  display.updateIcon(display.FIRE_ICON, false); // turn off fire icon
-  delay(500);
-  display.updateIcon(display.SUN_ICON, false); // turn off sun icon
-  delay(500);
-  display.updateIcon(display.FROST_ICON, false); // turn off frost icon
-  delay(500);
-  display.updateIcon(display.HUMIDITY_ICON, false); // turn off humidity icon
-
-  display.printHumidity(humidity);
-  display.printTemperature(temperature_celcius);
-  display.printTemperature(temperature_fahrenheit, true);
-
-  display.printBattLevel(80); // show battery 80% = 4 bars
-  delay(5000);
+  display.updateIcon(display.FROST_ICON, false);
+  delay(1000);
+  display.updateIcon(display.FIRE_ICON, false);
+  delay(1000);
+  display.updateIcon(display.HUMIDITY_ICON, false);
+  delay(1000);
+  display.updateIcon(display.SUN_ICON, false);
+  delay(3000);
   display.displayClear();
 }
+
+
+void loop() { }
+

@@ -9,25 +9,24 @@ void AIP16C22::sendCommand(uint8_t cmd) {
 }
 
 
-void AIP16C22::setAddress(uint8_t addr) {
-  sendCommand(0x00 | (addr & 0x1F));
-}
-
-
 void AIP16C22::writeSegment(uint8_t addr, uint8_t data) {
-  sendCommand(0x00 | (addr & 0x1F));
   Wire.beginTransmission(AIP16C22_ADDR);
+  delay(10);
+  Wire.write(addr);
+  delay(10);
   Wire.write(data);
+  delay(10);
   Wire.endTransmission();
 }
 
 
 void AIP16C22::displayInit(uint8_t address) {
   _address = address;
-  Wire.begin(_address);
+  Wire.begin();
   delay(100);
   // Configure display: 1/4 duty, 1/3 bias, display on, 80Hz
-  sendCommand(0x88);
+  sendCommand(0x8C);
+  sendCommand(0xC0);
   displayClear();
 }
 
@@ -86,9 +85,9 @@ void AIP16C22::printTemperature(float temp, bool fahrenheit) {
   updateIcon(TEMP_UNIT_S6, !fahrenheit);
 
   // Clear previous temperature digits
-  for(int i = 0; i < 3; i++) {
-    displayDigit(10, tempDigits[i]);
-  }
+  // for(int i = 0; i < 3; i++) {
+  //   displayDigit(10, tempDigits[i]);
+  // }
 
   // Show leading 1 (S3) if temp > 99.9
   bool showLeading1 = (temp >= 100.0);
@@ -110,8 +109,6 @@ void AIP16C22::printTemperature(float temp, bool fahrenheit) {
 
 
 void AIP16C22::printHumidity(float humidity) {
-  // Clear previous humidity digits
-  for(int i = 0; i < 3; i++) displayDigit(10, humidityDigits[i]);
 
   // Split into digits
   uint8_t digit1 = (int)(humidity / 10.0) % 10;
@@ -131,14 +128,14 @@ void AIP16C22::printHumidity(float humidity) {
 
 void AIP16C22::printBattLevel(uint8_t percent) {
   // Clear all battery bars
-  for(uint8_t i = BATT_BAR0; i <= BATT_BAR5; i++) {
-    updateIcon(i, false);
-  }
+  // for(uint8_t i = BATT_BAR0; i <= BATT_BAR5; i++) {
+  //   updateIcon(i, false);
+  // }
 
-  // Calculate active bars (1 bar = 20%)
+  updateIcon(BATT_BAR0, true);
   uint8_t bars = min(percent / 20, 5);
   for(uint8_t i = 0; i < bars; i++) {
-    updateIcon(BATT_BAR0 + i, true);
+    updateIcon(BATT_BAR5 - i, true);
   }
 }
 

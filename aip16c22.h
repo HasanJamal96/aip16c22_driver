@@ -56,7 +56,7 @@ class AIP16C22 {
       {0x07, 0x20}, // SEPARATOR,      // S9 (SEG15, COM1)
       {0x07, 0x40}, // HUMIDITY_ICON,  // S10 (SEG15, COM2)
       {0x07, 0x80}, // SUN_ICON,       // S11 (SEG15, COM3)
-      {0x04, 0x01}, // PERCENT_ICON,   // S12 (SEG9, COM0)
+      {0x04, 0x10}, // PERCENT_ICON,   // S12 (SEG9, COM0)
       {0x00, 0x10}, // BATT_BAR0,      // BT0 (SEG1, COM0)
       {0x00, 0x20}, // BATT_BAR1,      // BT1 (SEG1, COM1)
       {0x00, 0x40}, // BATT_BAR2,      // BT2 (SEG1, COM2)

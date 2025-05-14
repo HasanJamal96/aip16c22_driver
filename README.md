@@ -11,6 +11,3 @@ An Arduino library for driving the AiP16C22 LCD controller via I2C. Designed for
 - 🔋 **Battery Visualization**: 5-bar indicator (20% increments)
 - 🧹 **Screen Management**: Full clear function and partial updates
 
-
-### Note
-The code is not tested with the actual hardware
